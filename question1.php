@@ -15,7 +15,7 @@ $result=array();
 $tempnew="0";
 $Log=getAPI("http://test.sub.sakawa.com.tw/api.php?r=transfer_log");
 $time_1=$Log[0]['createtime'];
-
+$sum=0;
 for($i=0;$i<count($Log);$i++)
 {
   $orig=$Log[$i]['orig'];
@@ -24,6 +24,7 @@ for($i=0;$i<count($Log);$i++)
   $time_2=$Log[$i]['createtime'];
   $tempadd=(int)$orig+(int)$add;
   $id=$i+1;
+  $sum=$sum+(int)$add;
   if($id!=(int)$Log[$i]['insert_id'])
   {
     $arr["問題資料"]="insert_id:".$Log[$i]['insert_id'];
@@ -36,6 +37,10 @@ for($i=0;$i<count($Log);$i++)
     $arr["問題資料"]="insert_id:".$Log[$i]['insert_id'];
     $arr["發生問題狀況說明"]="時間戳錯誤 pre $time_1 next $time_2";
     $result[]=$arr;
+  }
+  else
+  {
+    $time_1=$time_2;
   }
 
   if((int)$new!=$tempadd)
